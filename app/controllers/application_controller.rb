@@ -1,3 +1,4 @@
+require 'rack-flash'
 require './config/environment'
 
 class ApplicationController < Sinatra::Base
@@ -9,8 +10,25 @@ class ApplicationController < Sinatra::Base
     set :session_secret, "secret"
   end
 
-  get "/" do
-    erb :index
+  use Rack::Flash
+
+  get '/' do
+    if !logged_in?
+      erb :'/index'
+    else
+      redirect("/projects")
+    end
+  end
+
+  helpers do
+    def logged_in?
+      !!current_user
+    end
+
+    def current_user
+      @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+    end
+
   end
 
 end

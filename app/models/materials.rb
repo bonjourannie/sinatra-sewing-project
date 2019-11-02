@@ -1,4 +1,4 @@
-class Ingredient < ActiveRecord::Base
-    belongs_to :pattern
+class Materials < ActiveRecord::Base
+    belongs_to :projects
   
   end

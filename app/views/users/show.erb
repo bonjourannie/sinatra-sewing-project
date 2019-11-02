@@ -1,0 +1,5 @@
+<h3>Projects from <%=@user.name%></h3>
+
+<%@user.projects.each do |project| %>
+  <p> -- <a href="/projects/<%=projects.slug%>"><%=proejcts.name%></a></p>
+<%end%>

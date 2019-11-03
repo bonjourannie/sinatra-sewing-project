@@ -1,75 +1,52 @@
 class UserController < ApplicationController
+    register Sinatra::Flash
+    require 'sinatra/flash'
+    enable :sessions
 
-    #I don't think I need this
-    configure do
-        set :views, 'app/views'
-        enable :sessions
-        set :session_secret, 'candy'
+    get '/signup' do 
+        !logged_in? ? (erb :'/users/signup') : (redirect "/")
+    end 
+
+    get '/users/:slug' do
+        @user = User.find_by_slug(params[:slug])
+        erb :'users/account'
+    end
+
+    post '/signup' do
+        user = User.create(:username => params[:username], :email => params[:email], :password => params[:password])
+        if user.save 
+            (session[:user_id] = user.id)
+            (redirect "/projects") 
+        else
+            flash[:error] = "Something went wrong. Please try again!"
+            redirect "/signup"
+        end
     end
 
     get '/login' do
-        @error_message = params[:error]
-        if !logged_in?
-          erb :'/users/login'
+        user = User.find_by(:username => params[:username])
+        !logged_in? ? (erb :'/users/login') : (redirect "/projects")
+    end
+
+    post "/login" do
+        user = User.find_by(:username => params[:username])
+        if user && user.authenticate(params[:password])
+            session[:user_id] = user.id
+            redirect "/projects"
         else
-          redirect("/projects")
-        end
-    end
-    
-    get '/signup' do
-        @error_message = params[:error]
-        if !logged_in?
-          erb :'/users/signup'
-        else
-          redirect("/projects/show")
-        end
-    end
-    
-    get '/logout' do
-        if logged_in?
-          session.clear
-          redirect("/login")
-        else
-          redirect("/login")
-        end
-    end
-    
-    get '/users' do
-        @users = User.all
-        erb :'/users/show'
-    end
-    
-    get '/users/:slug' do
-        @user = User.find_by_slug(params[:slug])
-        erb :'/users/show'
-    end
-    
-    post '/signup' do
-      if !User.all.find_by(username: params[:username])
-        if !params[:name].blank? && !params[:username].blank? && !params[:password].blank?
-           @user = User.create(username: params[:username], password: params[:password])
-           @user.save
-           session[:user_id] = @user.id
-           redirect("/projects/show")
-         else
-           redirect("/signup")
-        end
-       else
-         redirect("/signup?error=This username already exists.")
-       end
-    end
-    
-    post '/login' do
-        @user = User.find_by(username: params[:username])
-        if @user != nil && @user.authenticate(params[:password])
-          session[:user_id] = @user.id
-          redirect("/projects/show")
-        else
-          redirect("/signup")
+            flash[:error] = "Incorrect username or password. Please try again!"
+            redirect "/login"
         end
     end
 
-    
+    get "/logout" do
+        if logged_in? 
+            session.destroy
+            redirect '/login' 
+        else
+            flash[:error] = "Something went wrong. Please try again!"
+            redirect "/"
+        end
+    end
 
-    
 end

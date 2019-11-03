@@ -1,11 +1,11 @@
 class UserController < ApplicationController
 
     #I don't think I need this
-    # configure do
-    #     set :views, 'app/views'
-    #     enable :sessions
-    #     set :session_secret, 'candy'
-    # end
+    configure do
+        set :views, 'app/views'
+        enable :sessions
+        set :session_secret, 'candy'
+    end
 
     get '/login' do
         @error_message = params[:error]
@@ -21,7 +21,7 @@ class UserController < ApplicationController
         if !logged_in?
           erb :'/users/signup'
         else
-          redirect("/projects")
+          redirect("/projects/show")
         end
     end
     
@@ -36,7 +36,7 @@ class UserController < ApplicationController
     
     get '/users' do
         @users = User.all
-        erb :'/users/sjow'
+        erb :'/users/show'
     end
     
     get '/users/:slug' do
@@ -47,7 +47,7 @@ class UserController < ApplicationController
     post '/signup' do
       if !User.all.find_by(username: params[:username])
         if !params[:name].blank? && !params[:username].blank? && !params[:password].blank?
-           @user = User.create(name: params[:name],username: params[:username], password: params[:password])
+           @user = User.create(username: params[:username], password: params[:password])
            @user.save
            session[:user_id] = @user.id
            redirect("/projects/show")

@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
 
-    get '/projects' do
+    get '/projects/show' do
       @error_message = params[:error]
       @project = Projects.all
       erb :'/projects/show'
@@ -37,7 +37,7 @@ class ProjectsController < ApplicationController
       end
     end
   
-    post '/projects' do
+    post '/projects/show' do
       if logged_in?
         if current_user.projects.find_by(name: params[:project][:name])
           redirect("/projects/new?error=This project already exists")

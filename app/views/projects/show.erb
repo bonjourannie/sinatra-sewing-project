@@ -1,0 +1,16 @@
+<h3><%=@project.name%></h3>
+<label>Materials: </label>
+<p><%=@project.materials%></p>
+
+<label>User: </label>
+<p><a href="/users/<%=@project.user.slug%>"><%=@project.user.name%></a></p>
+
+<%if current_user.id == @project.user_id%>
+<input type="button" class="btn" value="Edit Your Project" onclick="window.location.href='/projects/<%=@project.slug%>/edit'">
+<br>
+  <form action="/proejcts/<%=@project.slug%>/delete" method="post">
+    <input id="hidden" type="hidden" name="_method" value="delete">
+    <input type="submit" class="btn-delete" value="Delete Your Project"></div>
+  </form>
+  <% else %>
+  <%end%>

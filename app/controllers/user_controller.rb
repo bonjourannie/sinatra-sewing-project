@@ -13,37 +13,37 @@ class UserController < ApplicationController
         else
           redirect("/projects")
         end
-      end
+    end
     
-      get '/signup' do
+    get '/signup' do
         @error_message = params[:error]
         if !logged_in?
           erb :'/users/signup'
         else
           redirect("/projects")
         end
-      end
+    end
     
-      get '/logout' do
+    get '/logout' do
         if logged_in?
           session.clear
           redirect("/login")
         else
           redirect("/login")
         end
-      end
+    end
     
-      get '/users' do
+    get '/users' do
         @users = User.all
         erb :'/users/sjow'
-      end
+    end
     
-      get '/users/:slug' do
+    get '/users/:slug' do
         @user = User.find_by_slug(params[:slug])
         erb :'/users/show'
-      end
+    end
     
-      post '/signup' do
+    post '/signup' do
       if !User.all.find_by(username: params[:username])
         if !params[:name].blank? && !params[:username].blank? && !params[:password].blank?
            @user = User.create(name: params[:name],username: params[:username], password: params[:password])
@@ -52,13 +52,13 @@ class UserController < ApplicationController
            redirect("/projects")
          else
            redirect("/signup")
-         end
+        end
        else
          redirect("/signup?error=This username already exists.")
        end
-      end
+    end
     
-       post '/login' do
+    post '/login' do
         @user = User.find_by(username: params[:username])
         if @user != nil && @user.authenticate(params[:password])
           session[:user_id] = @user.id
@@ -66,17 +66,9 @@ class UserController < ApplicationController
         else
           redirect("/signup")
         end
-      end
-
-    helpers do
-        def logged_in?
-          !!current_user
-        end
-    
-        def current_user
-          @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
-        end
-    
     end
+
+    
+
     
 end

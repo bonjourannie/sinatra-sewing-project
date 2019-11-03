@@ -1,9 +1,12 @@
 <h3><%=@project.name%></h3>
 <label>Materials: </label>
 <p><%=@project.materials%></p>
+<label>Instructions: </label>
+<p><%=@project.intructions%></p>
 
 <label>User: </label>
-<p><a href="/users/<%=@project.user.slug%>"><%=@project.user.name%></a></p>
+<p><a href="/users/<%=@project.user.slug%>"><%=@project.user.username%></a>
+</p>
 
 <%if current_user.id == @project.user_id%>
 <input type="button" class="btn" value="Edit Your Project" onclick="window.location.href='/projects/<%=@project.slug%>/edit'">

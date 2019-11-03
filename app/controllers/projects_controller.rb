@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
 
-    get '/projects/show' do
+    get '/projects' do
       @error_message = params[:error]
       @project = Projects.all
       erb :'/projects/show'

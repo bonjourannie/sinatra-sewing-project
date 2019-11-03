@@ -6,57 +6,77 @@ class UserController < ApplicationController
         set :session_secret, 'candy'
     end
 
-    get '/users/signup' do
-        if User.logged_in?(session) && user = User.current_user(session)
-          redirect to "/users/#{user.id}"
+    get '/login' do
+        @error_message = params[:error]
+        if !logged_in?
+          erb :'/users/login'
         else
+          redirect("/projects")
+        end
+      end
+    
+      get '/signup' do
+        @error_message = params[:error]
+        if !logged_in?
           erb :'/users/signup'
+        else
+          redirect("/projects")
         end
       end
     
-      get '/users/login' do
-        if User.logged_in?(session) && user = User.current_user(session)
-          redirect to "/users/#{user.id}"
+      get '/logout' do
+        if logged_in?
+          session.clear
+          redirect("/login")
         else
-          erb :'/users/login'
+          redirect("/login")
         end
       end
     
-      get '/users/logout' do
-        session.clear
-        redirect to '/users/login'
+      get '/users' do
+        @users = User.all
+        erb :'/users/sjow'
       end
     
-      get '/users/:id' do
-        if User.logged_in?(session) && @user = User.current_user(session)
-          erb :'/users/show'
-        else
-          redirect to '/'
-        end
+      get '/users/:slug' do
+        @user = User.find_by_slug(params[:slug])
+        erb :'/users/show'
       end
     
-      post '/users' do
-        user = User.new(username: params[:username], email: params[:email], password: params[:password])
-    
-        if user.save
-          session[:user_id] = user.id
-    
-          redirect to "/users/#{user.id}"
-        else
-          redirect to '/users/signup'
-        end
+      post '/signup' do
+      if !User.all.find_by(username: params[:username])
+        if !params[:name].blank? && !params[:username].blank? && !params[:password].blank?
+           @user = User.create(name: params[:name],username: params[:username], password: params[:password])
+           @user.save
+           session[:user_id] = @user.id
+           redirect("/projects")
+         else
+           redirect("/signup")
+         end
+       else
+         redirect("/signup?error=This username already exists.")
+       end
       end
     
-      post '/users/login' do
-        user = User.find_by(username: params[:username])
-    
-        if user && user.authenticate(params[:password])
-          session[:user_id] = user.id
-          redirect to "/users/#{user.id}"
+       post '/login' do
+        @user = User.find_by(username: params[:username])
+        if @user != nil && @user.authenticate(params[:password])
+          session[:user_id] = @user.id
+          redirect("/projects")
         else
-          @error_message = "Invalid user info."
-          erb :'/users/login'
+          redirect("/signup")
         end
       end
 
+    helpers do
+        def logged_in?
+          !!current_user
+        end
+    
+        def current_user
+          @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+        end
+    
     end
+    
+end

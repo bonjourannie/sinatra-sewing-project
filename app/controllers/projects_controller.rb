@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
   get '/projects' do 
       if logged_in?
           @projects = Projects.all
-          erb :'/projects/index'
+          erb :'/projects/show'
       else
           redirect '/login'
       end
@@ -11,7 +11,7 @@ class ProjectsController < ApplicationController
 
   get '/projects/new' do
       if logged_in?
-          erb :'/projects/create'
+          erb :'/projects/new'
       else 
           redirect '/login'
       end
@@ -62,7 +62,7 @@ class ProjectsController < ApplicationController
           flash[:error] = "All fields must be filled in"
           redirect "/projects/#{@project.id}/edit"
       elsif logged_in? && !params.empty? && current_user.projects.include?(@project)
-          @project.update(name: params[:name], materials: params[:materials], image_url: params[:image_url], instructions: params[:instructions])
+          @project.update(name: params[:name], materials: params[:materials], instructions: params[:instructions])
           redirect "/projects/#{@project.id}"
       else 
           flash[:error] = "You must be logged in."

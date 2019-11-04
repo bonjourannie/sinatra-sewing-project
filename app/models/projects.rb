@@ -8,7 +8,7 @@ class Projects < ActiveRecord::Base
     end
   
     def self.find_by_slug(slug)
-      self.all.find{|recipe| recipe.slug == slug}
+      self.all.find{|project| project.slug == slug}
     end
   
   end

@@ -1,0 +1,7 @@
+<h2>All Sewing Projects</h2>
+
+<ol>
+<% @project.each do |project| %>
+    <li><a href="/projects/<%= project.id %>"><%= project.name %></a></li>
+<% end %>
+</ol>

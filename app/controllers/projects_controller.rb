@@ -12,7 +12,7 @@ get "/project/new" do
 end
 
 post "/project" do
-  @project = Project.new
+  @project = current_user.project.new
   @project.name = params[:name]
   @project.materials = params[:materials]
   @project.instructions = params[:instructions]
@@ -20,7 +20,7 @@ post "/project" do
   if !params[:project][:name].empty? && !params[:project][:materials].empty? && !params[:project][:instructions].empty?
       @project.save
       flash[:message] = "You successfully created a new sewing project"
-      redirect ("/project/#{@project.slug}")
+      redirect ("/project/#{@project.id}")
   else
       flash[:message] = "Please fill in all the fields"
       redirect to "/project/new"

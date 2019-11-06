@@ -9,24 +9,25 @@ class ApplicationController < Sinatra::Base
     set :session_secret, "candy"
   end
 
-  get '/' do
+  get "/" do
     erb :index
-  end 
+end
 
-  helpers do
-    def logged_in?
-      !!session[:user_id]
+helpers do 
+
+    def current_user 
+        @current_user ||= User.find_by_id(session[:user_id])
     end
 
-    def current_user
-      User.find(session[:user_id])
+    def logged_in?
+        !current_user.nil?
     end
 
     def redirect_if_not_logged_in?
-      if !logged_in? 
-          redirect to '/'
-      end
+        if !logged_in? 
+            redirect to '/'
+        end
     end
-  end
+end
 
 end

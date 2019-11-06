@@ -1,4 +1,4 @@
-class UserController < ApplicationController
+class UsersController < ApplicationController
     register Sinatra::Flash
     require 'sinatra/flash'
     enable :sessions

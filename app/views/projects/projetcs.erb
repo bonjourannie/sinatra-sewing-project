@@ -1,0 +1,19 @@
+<h3>Select the project that you would like to View, Edit or Delete:</h3>
+  <% @projects.each do |project| %>
+  <ul>
+  <li>
+  <a href="/projects/<%= project.id%>"><%= project.name %></li></a>
+  </ul>
+  <% end %>
+<br></br>
+<br></br>
+  <div class="btn-group">
+    <form action="/projects/new" method=get>
+    <input type="submit" class="button" value="Create a Recipe"/>
+    </form>
+    <form action="/profile" method=get>
+    <input type="submit" class="button" value="My Profile"/>
+    </form>
+    <form action="/logout" method=get>
+    <input type="submit" class="button" value="Logout"/>
+</div>

@@ -1,19 +1,28 @@
-<h1>Project details</h1>
+<a href="/projects/new">Project Id: </a>
 
-<h2><%= @project.name %></h2>
-<h3>Project Materials:</h3> <%= @project.materials %>
-<h3>Project Instructions: </h3><%= @project.intructions %></p>
 
-<% if @project.user == current_user %>
-<form action="/project/<%= @project.id %>/delete" method="POST">
-  <input type="hidden" name="_method" id="hidden" value="DELETE">
-  <input type="submit" value="Delete">
-</form>
 
-<br>
+<% if !@current_user.projects.include?(@project) %>
 
-<p><a href="/project/<%= @project.id %>/edit">Edit project</a>
+    <%= @project.id %> <br>
+    <p>
+        <strong> Name: </strong><%= @project.name %><br><br>
+        <strong> Materials: </strong><%= @project.materials %><br><br>
+        <strong>Instructions: </strong><%= @project.instructions %>
+    </p>
+
+<% else %>
+    <%= @project.id %> <br><br>
+    <strong>Name: </strong><%= @project.name %><br><br>
+    <strong>Materials: </strong><%= @project.materials %><br><br>
+    <strong>Instructions: </strong><%= @project.instructions %><br>
+
+
+<a href="/recipes/<%= @recipe.id %>/edit" class="button">Edit Recipe</a><br><br>
+
 <% end %>
-<a href="/project">Back To All Projects</a></p>
-<a href="/project/new">Add New Projects</a></p>
-<a href="/logout">Logout</a></p>
+
+<form action="/projects/<%= @project.id %>" method="POST">
+    <input type="hidden" name="_method" value="delete">
+    <button type="submit" class="button" value="Delete">Delete</button>
+</form>

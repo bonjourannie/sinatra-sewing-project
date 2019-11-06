@@ -1,5 +1,5 @@
 <h3>Edit Your Project</h3>
-<form action="/projects/<%=@project.slug%>" method="post">
+<form action="/project/<%=@project.slug%>" method="post">
   <input id="hidden" type="hidden" name="_method" value="patch">
   <label>Name: </label><input type="text" name="project[name]" value="<%=@project.name%>">
   <br></br>

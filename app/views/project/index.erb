@@ -1,0 +1,10 @@
+<h3>All Sewing Projects</h3>
+
+<% @project.each.with_index(1) do | project, index| %>
+    <p>
+        <%= index %> <br>
+        <strong>Name: </strong><%= project.name %></h3><br>
+        <strong>Materials: </strong><%= project.materials %><br>
+        <strong>Instructions: </strong><%= project.instructions %><br><br>
+    </p>
+<% end %>

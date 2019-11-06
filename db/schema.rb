@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20191031215601) do
   end
 
   create_table "projects", force: :cascade do |t|
+    t.string  "name"
     t.string  "materials"
     t.text    "instructions"
     t.integer "user_id"

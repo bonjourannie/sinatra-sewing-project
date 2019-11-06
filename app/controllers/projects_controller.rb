@@ -1,84 +1,62 @@
 class ProjectsController < ApplicationController
 
-  get '/projects' do 
-      if logged_in?
-          @projects = Projects.all
-          erb :'/projects/index'
-      else
-          redirect '/login'
-      end
-  end
+get "/projects" do
+  @project = Projects.all
+  erb :"/projects/index"
+end
 
-  get '/projects/new' do
-      if logged_in?
-          erb :'/projects/create'
-      else 
-          redirect '/login'
-      end
-  end
+get "/projects/new" do
+  redirect_if_not_logged_in?
+  @projects = Projects.all
+  erb :"/projects/new"
+end
 
-  post '/projects' do
-      if params.empty?
-          flash[:error] = "All fields must be filled in"
-          redirect '/projects/new'
-      elsif logged_in? && !params.empty?
-          @project = current_user.projects.create(name: params[:name], materials: params[:materials], instructions: params[:instructions])
-          if @project.save
-              redirect "/projects/#{@project.id}"
-          else
-              flash[:error] = "Your project could not be saved. Try again!"
-              redirect '/projects/new'
-          end
-      else 
-          flash[:error] = "You must be logged in to see the projects index."
-          redirect '/login'
-      end
-      current_user.save
+post "/projects" do
+  @project = current_user.project.new(name: params[:project][:name], materials: params[:project][:materials], instructions: params[:project][:instructions])
+  if !params[:project][:name].empty? && !params[:project][:materials].empty? && !params[:project][:instructions].empty?
+      @project.save
+      @project
+      flash[:message] = "You successfully created a new sewing project"
+      redirect ("/projects/#{@project.id}")
+  else
+      flash[:message] = "Please fill in all the fields"
+      redirect to "/projects/new"
   end
+end
 
-  get '/projects/:id' do
-      if logged_in?
-          @project = Projects.find_by_id(params[:id])
-          erb :'/projects/show'
-      else 
-          flash[:error] = "You must be logged in to view projects."
-          redirect '/login'
-      end
-  end
+get "/projects/:id" do
+  redirect_if_not_logged_in?
+  @project = Projects.find_by_id(params[:id])
+  erb :"/projects/show"
+end
 
-  get '/projects/:id/edit' do 
-      @project = Projects.find_by_id(params[:id])
-      if logged_in? && current_user.projects.include?(@project)
-          erb :'/projects/edit'
-      else 
-          flash[:error] = "You must be logged in to edit a project."
-          redirect '/login'
-      end
+get "/projects/:id/edit" do
+  redirect_if_not_logged_in?
+  @project = current_user.projects.find_by_id(params[:id])
+  if @project
+      erb :"/projects/edit"
+  else 
+      redirect to '/projects/new'
   end
+end
 
-  patch '/projects/:id' do
-      @project = Projects.find_by_id(params[:id])
-      if params.empty?
-          flash[:error] = "All fields must be filled in"
-          redirect "/projects/#{@project.id}/edit"
-      elsif logged_in? && !params.empty? && current_user.projects.include?(@project)
-          @project.update(name: params[:name], materials: params[:materials], image_url: params[:image_url], instructions: params[:instructions])
-          redirect "/projects/#{@project.id}"
-      else 
-          flash[:error] = "You must be logged in."
-          redirect '/login'
-      end
-      
+patch '/projects/:id' do 
+  @project = current_user.projects.find_by_id(params[:id])
+  if @project
+      @project.update(name: params[:project][:name], materials: params[:project][:materials], instructions: params[:project][:instructions])
+      flash[:message] = "Project successfully updated!"
+      redirect to "/projects/#{@project.id}"
+  else 
+      flash[:message] = "Sorry, project not found"
+      erb :'projects/edit.html'
   end
+end
 
-  delete '/projects/:id/delete' do
-      if logged_in?
-          @project = Projects.find_by_id(params[:id])
-          if @project.user == current_user then @project.delete else redirect '/login' end
-      else 
-          flash[:error] = "You must be logged in."
-          redirect '/login'
-      end
-      redirect '/projects'
-  end
+delete '/projects/:id' do 
+  @project = Projects.find_by_id(params[:id])
+  redirect '/projects/new' unless @project
+  @project.update(deleted: true)
+  redirect to '/projects/new'
+end
+
 end

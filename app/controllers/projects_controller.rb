@@ -38,7 +38,7 @@ get '/projects/new' do
       redirect to '/login'
     end
     @project = Project.find(params[:id])
-    if !authorized_to_edit?(@recipe)
+    if !authorized_to_edit?(@project)
       redirect to '/projetcs'
     end
     erb :"projects/edit"

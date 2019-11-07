@@ -1,28 +1,28 @@
-<a href="/projects/new">Project Id: </a>
+<h1><%= @project.name %></h1>
+  <br>
+  </br>
+  <h2>Materials:</h2><br>
+  <p><% arr = @project.materials.split(",") %></p>
+  <p><% arr.each do |materials| %></p>
+  <p><%= materials %></p>
+  <p><% end %></p>
+  <br>
+  <h2>Instructions:</h2><br>
+  <p><%= @project.instructions %></p></br>
+  
 
-
-
-<% if !@current_user.projects.include?(@project) %>
-
-    <%= @project.id %> <br>
-    <p>
-        <strong> Name: </strong><%= @project.name %><br><br>
-        <strong> Materials: </strong><%= @project.materials %><br><br>
-        <strong>Instructions: </strong><%= @project.instructions %>
-    </p>
-
-<% else %>
-    <%= @project.id %> <br><br>
-    <strong>Name: </strong><%= @project.name %><br><br>
-    <strong>Materials: </strong><%= @project.materials %><br><br>
-    <strong>Instructions: </strong><%= @project.instructions %><br>
-
-
-<a href="/recipes/<%= @recipe.id %>/edit" class="button">Edit Recipe</a><br><br>
-
-<% end %>
-
-<form action="/projects/<%= @project.id %>" method="POST">
-    <input type="hidden" name="_method" value="delete">
-    <button type="submit" class="button" value="Delete">Delete</button>
-</form>
+<div class="btn-group">
+  <form action="/projects/<%= @project.id %>/edit" method=get>
+    <input type="submit" class="button" value="Edit sewing project"/>
+  </form>
+  <form action="/projects/<%= @project.id %>/delete" method="post">
+    <input id="hidden" type="hidden" name="_method" value="delete"/>
+    <input type="submit" class="button" value="Delete sewing project" />
+  </form>
+  <form action="/profile" method=get>
+    <input type="submit" class="button" value="My Profile"/>
+  </form>
+  <form action="/logout" method=get>
+    <input type="submit" class="button" value="Logout"/>
+  </form>
+  </div>

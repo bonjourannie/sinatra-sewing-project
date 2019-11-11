@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 20191031215601) do
 
   create_table "materials", force: :cascade do |t|
     t.string  "name"
-    t.integer "pattern_id"
+    t.integer "project_id"
   end
 
   create_table "projects", force: :cascade do |t|

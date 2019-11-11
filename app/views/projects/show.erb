@@ -2,9 +2,9 @@
   <br>
   </br>
   <h2>Materials:</h2><br>
-  <p><% arr = @project.materials.split(",") %></p>
-  <p><% arr.each do |materials| %></p>
-  <p><%= materials %></p>
+  <p><% arr = @project.materials %></p>
+  <p><% arr.each do |material| %></p>
+  <p><%= material.name %></p>
   <p><% end %></p>
   <br>
   <h2>Instructions:</h2><br>

@@ -8,7 +8,7 @@ class UsersController < ApplicationController
         redirect to '/profile'
       end
   
-      erb :"/users/create_user"
+      erb :"/users/signup"
     end
     
     post '/signup' do
@@ -16,7 +16,7 @@ class UsersController < ApplicationController
         flash[:field_error] = "All fields are required."
         redirect to '/signup'
       end
-      @user = User.create(username: params[:username], email: params[:email], password: params[:password])
+      @user = User.create(username: params[:username], password: params[:password])
       session[:user_id] = @user.id
   
       erb :'users/profile'

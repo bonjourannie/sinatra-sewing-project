@@ -28,6 +28,10 @@ helpers do
             redirect to '/'
         end
     end
+
+    def authorized_to_edit?(project)
+        current_user.id == @project.user_id
+    end 
 end
 
 end

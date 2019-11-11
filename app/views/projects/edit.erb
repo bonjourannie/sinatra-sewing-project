@@ -1,13 +1,13 @@
 <h1>Edit sewing project</h1>
 
 <div class="btn-group">
-<form method="POST" action="/projetcs/<%= @project.id %>">
+<form method="POST" action="/projects/<%= @project.id %>">
   <input id="hidden" type="hidden" name="_method" value="patch">
   <label>Name:</label><br>
   <input type="text" name="name" id="name" value="<%= @project.name %>"></br>
   <br>
-  <label>Ingredients:</label><br>
-  <textarea type="text" name="materials" id="materials"><%= @project.materials %></textarea></br>
+  <label>Materials:</label><br>
+  <input type="text" name="materials" id="materials" value="<%= @project.materials %>"></br>
   <br>
   <label>Instructions:</label><br>
   <textarea type="text" name="instructions" id="instructions" ><%= @project.instructions %></textarea></br>

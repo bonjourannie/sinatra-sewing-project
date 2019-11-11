@@ -21,7 +21,7 @@ get '/projects/new' do
     if params[:name].empty?
       redirect to '/projects/new'
     end
-      @project = @user.project.create(name: params[:name], materials: params[:materials], instructions: params[:instructions])
+      @project = @user.projects.create(name: params[:name], material_names: params[:material_names], instructions: params[:instructions])
     redirect to '/projects'
   end 
   
@@ -39,7 +39,7 @@ get '/projects/new' do
     end
     @project = Project.find(params[:id])
     if !authorized_to_edit?(@project)
-      redirect to '/projetcs'
+      redirect to '/projects'
     end
     erb :"projects/edit"
   end
@@ -50,20 +50,20 @@ get '/projects/new' do
       redirect to '/projects'
     end
     if params[:name].empty?
-      redirect to "/projetcs/#{params[:id]}/edit"
+      redirect to "/projects/#{params[:id]}/edit"
     end
-    project.update(name: params[:name], materials: params[:materials], instructions: params[:instructions])
+    project.update(name: params[:name], materials: params[:material_names], instructions: params[:instructions])
  
-    redirect to "/projetcs/#{project.id}"
+    redirect to "/projects/#{project.id}"
   end
 
-  delete '/projetcs/:id/delete' do 
+  delete '/projects/:id/delete' do 
     if !logged_in?
       redirect to '/login'
     end
     @project = Project.find(params[:id])
     if !authorized_to_edit?(@project)
-      redirect to '/projetcs'
+      redirect to '/projects'
     else
       @project.delete
       redirect to '/projects'

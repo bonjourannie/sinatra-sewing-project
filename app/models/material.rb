@@ -1,4 +1,6 @@
 class Material < ActiveRecord::Base
-    belongs_to :projects
+    belongs_to :project
+
+    validates :name, presence: true
   
   end

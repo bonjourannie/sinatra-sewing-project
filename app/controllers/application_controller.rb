@@ -30,7 +30,7 @@ helpers do
     end
 
     def authorized_to_edit?(project)
-        current_user.id == @project.user_id
+        current_user.id == project.user_id
     end 
 end
 

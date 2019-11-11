@@ -45,7 +45,7 @@ get '/projects/new' do
   end
   
   patch '/projects/:id' do
-    proecjt = Project.find(params[:id])
+    project = Project.find(params[:id])
     if !authorized_to_edit?(@project)
       redirect to '/projects'
     end

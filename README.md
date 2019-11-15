@@ -3,5 +3,3 @@ Sinatra Sewing Project  application allows users to create accounts, login and p
 Installation: To download this app, git clone: https://github.com/bonjourannie/sinatra-sewing-project
 
 Run bundle install and run shotgun in your terminal to get the app running on your local server.
-
-Usage: Create a username and password and create your very Sewing Project account.

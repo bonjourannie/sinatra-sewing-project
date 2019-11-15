@@ -7,10 +7,14 @@
   <input type="text" name="name" id="name" value="<%= @project.name %>"></br>
   <br>
   <label>Materials:</label><br>
-  <input type="text" name="materials" id="materials" value="<%= @project.materials %>"></br>
+  <input type ="text" name="material_names[][name]" value="<%= @project.material_names[0] %>" required>
+  <br>
+  <input type ="text" name="material_names[][name]" value="<%= @project.material_names[1] %>">
+  <br>
+  <input type ="text" name="material_names[][name]" value="<%= @project.material_names[2] %>">
   <br>
   <label>Instructions:</label><br>
-  <textarea type="text" name="instructions" id="instructions" ><%= @project.instructions %></textarea></br>
+  <input type="text" name="instructions" id="instructions" value ="<%= @project.instructions %>"></br>
   <br>
   <input type="submit" class="button" value="Submit"></br>
 </form>

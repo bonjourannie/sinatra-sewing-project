@@ -38,21 +38,18 @@ get '/projects/new' do
       redirect to '/login'
     end
     @project = Project.find(params[:id])
-    if !authorized_to_edit?(@project)
-      redirect to '/projects'
-    end
     erb :"projects/edit"
   end
   
   patch '/projects/:id' do
     project = Project.find(params[:id])
-    if !authorized_to_edit?(@project)
-      redirect to '/projects'
+    if !logged_in?
+      redirect to '/login'
     end
     if params[:name].empty?
       redirect to "/projects/#{params[:id]}/edit"
     end
-    project.update(name: params[:name], materials: params[:material_names], instructions: params[:instructions])
+    project.update(name: params[:name], material_names: params[:material_names], instructions: params[:instructions])
  
     redirect to "/projects/#{project.id}"
   end
@@ -62,12 +59,9 @@ get '/projects/new' do
       redirect to '/login'
     end
     @project = Project.find(params[:id])
-    if !authorized_to_edit?(@project)
+        @project.delete
       redirect to '/projects'
-    else
-      @project.delete
-      redirect to '/projects'
-    end 
+    
   end 
 
 end 
